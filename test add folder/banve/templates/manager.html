@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Manager page</title>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="../static/js/script.js"></script>
+    <link rel="stylesheet" href="../static/css/mg.css" type="text/css" media="all">
+</head>
+<body>
+<div>
+    <h1 class="text-center text-danger" style="width: 100%;">Trang quản trị</h1>
+</div>
+<div class="container">
+    <div class="grid-container">
+        <a href="{{ url_for('thanhtoan') }}"><div class="gridson btn btn-danger">Thanh toán</div></a>
+<!--        <a href="{{ url_for('tracuu') }}"><div class="gridson btn btn-danger">Tra cứu</div></a>-->
+        <a href="{{ url_for('baocao') }}"><div class="gridson btn btn-danger">Báo cáo</div></a>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>AirLines | Book</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../static/css/reset.css" type="text/css" media="all">
+<link rel="stylesheet" href="../static/css/layout.css" type="text/css" media="all">
+<link rel="stylesheet" href="../static/css/style.css" type="text/css" media="all">
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script type="text/javascript" src="../static/js/jquery-1.5.2.js" ></script>
+<script type="text/javascript" src="../static/js/cufon-yui.js"></script>
+<script type="text/javascript" src="../static/js/cufon-replace.js"></script>
+<script type="text/javascript" src="../static/js/Cabin_400.font.js"></script>
+<script type="text/javascript" src="../static/js/tabs.js"></script>
+<script type="text/javascript" src="../static/js/jquery.jqtransform.js" ></script>
+<script type="text/javascript" src="../static/js/jquery.nivo.slider.pack.js"></script>
+<script type="text/javascript" src="../static/js/atooltip.jquery.js"></script>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+<script type="text/javascript" src="../static/js/script.js"></script>
+<!--[if lt IE 9]>
+  <script type="text/javascript" src="../static/js/html5.js"></script>
+  <style type="text/css">.main, .tabs ul.nav a, .content, .button1, .box1, .top {
+    behavior: url("../static/js/PIE.htc")
+  }</style>
+  <![endif]-->
+</head>
+<body id="page3">
+<div class="main">
+  <!--header -->
+  <header>
+    <div class="wrapper">
+      <h1><a href="{{ url_for('index') }}" id="logo">AirLines</a></h1>
+      <span id="slogan">Fast, Frequent &amp; Safe Flights</span>
+      <nav id="top_nav">
+        <ul>
+          <li><a href="{{ url_for('index') }}" class="nav1">Home</a></li>
+          {% if session['user']['id']!="" and session['user']['username']!="" %}
+          <li><a onclick="logout()" class="nav2">Logout</a></li>
+          {% else %}
+          <li><a  onclick="logincostume()" class="nav2">Login</a></li>
+          {% endif %}
+          <li><a href="{{ url_for('contacts') }}" class="nav3">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+    <nav>
+      <ul id="menu">
+        <li><a href="{{ url_for('index') }}"><span><span>About</span></span></a></li>
+        <li><a href="{{ url_for('backsearch') }}"><span><span>Search</span></span></a></li>
+        <li id="menu_active"><a href="#"><span><span>Book</span></span></a></li>
+        <li><a href="{{ url_for('safety') }}"><span><span>Safety</span></span></a></li>
+        <li class="end"><a href="{{ url_for('contacts') }}"><span><span>Contacts</span></span></a></li>
+      </ul>
+    </nav>
+  </header>
+  <!-- / header -->
+  <!--content -->
+  <section id ="content">
+      <div class="text1"><b>mã chuyến bay :</b> {{ fly.id }}</div>
+      <div class="text1"><b>Số ghế :</b> {{ seat }} </div>
+      <div class="text1">Bay từ <b>{{ info['airfrom'] }} </b> đến <b>{{ info['airto'] }}</b></div>
+      <div class="text1"><b>Ngày bay :</b>{{ fly.day }} </div>
+      <div class="text1"><b>Giờ bay :</b>{{ fly.time }}</div>
+      <div class="text1"><b>Thời gian bay :</b>{{ fly.flyTime }}</div>
+      <table class="table" style="width: 80%; margin: auto">
+          {% if kt %}
+          <tr>
+              <th colspan="5" class="text-center" style="font-size: 20px">Trạm trung gian</th>
+          </tr>
+          <tr>
+              <th>Mã trạm</th>
+              <th>Nước</th>
+              <th>Thành phố</th>
+              <th>Thời gian dừng</th>
+              <th>Ghi chú</th>
+          </tr>
+          {% for s in st %}
+          <tr>
+            <td>{{ s[0] }}</td>
+            <td>{{ s[1] }}</td>
+            <td>{{ s[2] }}</td>
+            <td>{{ s[3] }}</td>
+            <td>{{ s[4] }}</td>
+          </tr>
+          {% endfor %}
+          {% else %}
+          <div class="text-center" style="width: 100%"><h1 style="width: 100%">Không có trạm dừng</h1></div>
+          {% endif %}
+      </table>
+      <table class="table1">
+            <div class="demo">
+                <tr>
+                {% for s in seats %}
+                    {% if s.classes == 1 %}
+                        {% if s.active ==1 %}
+                            <th>
+                                <div class="seat class1 actives" onclick="addseat(this,{{s.id}},{{fly.id}},{{s.classes}})" ><p>{{ s.id }}</p></div>
+                            </th>
+                        {% else %}
+                            <th>
+                                    <div class="seat class1 unactive"><p>{{ s.id }}</p></div>
+                            </th>
+                        {% endif %}
+                    {% endif %}
+                    {% if s.classes == 2 %}
+                        {% if s.active ==1 %}
+                            <th>
+                                    <div class="seat class2 actives" onclick="addseat(this,{{s.id}},{{fly.id}},{{s.classes}})"><p>{{ s.id }}</p></div>
+                            </th>
+                        {% else %}
+                            <th>
+                                    <div class="seat class2 unactive"><p>{{ s.id }}</p></div>
+                            </th>
+                        {% endif %}
+                    {% endif %}
+                    {% if s.id % 4 == 0 %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            </table>
+      <table class="table">
+          <td class="text-right coltt">Số ghế chọn:</td>
+          <td class="coltt" id="countseat">0</td>
+          <td class="text-right coltt">Tổng tiền:</td>
+          <td class="coltt" id="total">0</td>
+      </table>
+      <div style="text-align: center ">
+          <a href="{{ url_for('backsearch') }}" class="btnn">&laquo; Previous</a>
+          <a href="{{ url_for('payment') }}" class="btnn">Next &raquo;</a>
+      </div>
+  </section>
+  <!--content end-->
+  <!--footer -->
+  <footer>
+    <div class="wrapper">
+      <ul id="icons">
+        <li><a href="#" class="normaltip"><img src="../static/images/icon1.jpg" alt=""></a></li>
+        <li><a href="#" class="normaltip"><img src="../static/images/icon2.jpg" alt=""></a></li>
+        <li><a href="#" class="normaltip"><img src="../static/images/icon3.jpg" alt=""></a></li>
+        <li><a href="#" class="normaltip"><img src="../static/images/icon4.jpg" alt=""></a></li>
+        <li><a href="#" class="normaltip"><img src="../static/images/icon5.jpg" alt=""></a></li>
+        <li><a href="#" class="normaltip"><img src="../static/images/icon6.jpg" alt=""></a></li>
+      </ul>
+      <div class="links">Copyright &copy; <a href="#">Domain Name</a> All Rights Reserved<br>
+        Design by <a target="_blank" href="http://www.templatemonster.com/">TemplateMonster.com</a></div>
+    </div>
+  </footer>
+  <!--footer end-->
+</div>
+<script type="text/javascript">Cufon.now();</script>
+<script type="text/javascript">
+jQuery(document).ready(function ($) {
+    $('.form_5').jqTransform({
+        imgPath: 'jqtransformplugin/img/'
+    });
+});
+$(document).ready(function () {
+    tabs2.init();
+});
+</script>
+</body>
+</html>

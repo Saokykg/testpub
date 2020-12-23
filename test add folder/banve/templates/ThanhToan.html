@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manager page</title>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="../static/js/script.js"></script>
+</head>
+<body>
+<div>
+    <h1 class="text-center text-danger" style="width: 100%;">Trang quản trị</h1>
+</div>
+<div class="container">
+    <form action="{{ url_for('thanhtoan') }}">
+    <div class="form-group">
+        <label for="cmnd">CMND</label>
+        <input type="text"
+               id="cmnd"
+               name="cmnd"
+               class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Xác nhận" class="btn btn-danger" />
+    </div>
+    {% if ticket == None %}
+        <h1>Không có vé tương ứng</h1>
+    {% else %}
+    <table class="table">
+        <tr>
+            <th>Mã chuyến bay</th>
+            <th>Nơi đi</th>
+            <th>Nơi đến</th>
+            <th>Số ghế</th>
+            <th>Hạng ghế</th>
+            <th>Giá</th>
+            <th>Trạng thái</th>
+            <th></th>
+        </tr>
+    {% for t in ticket %}
+        <tr>
+            <td>{{ t[2] }}</td>
+            {% for c in city %}
+            {% if c.id == t[0] %}
+            <td>{{ c.city }}</td>
+            {% endif %}
+            {% endfor %}
+            {% for c in city %}
+            {% if c.id == t[1] %}
+            <td>{{ c.city }}</td>
+            {% endif %}
+            {% endfor %}
+            <td>{{ t[4] }}</td>
+            <td>{{ t[3] }}</td>
+            <td>{{ t[5] }}</td>
+            <td><a onclick="thanhtoan({{ t[7] }})" id="tt{{ t[7] }}" href="#">Thanh toán</a><td>
+            <td><a onclick="xoa({{ t[7] }})" id="xv{{ t[7] }}" href="#"> Hủy vé</a></td>
+        </tr>
+    {% endfor %}
+    </table>
+    {% endif %}
+</form>
+</div>
+</body>
+</html>

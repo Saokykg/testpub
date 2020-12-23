@@ -1,0 +1,16 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: auto  auto;
+  background-color: #98c1e3;
+  padding: 10px;
+}
+.grid-container >a{
+	text-align: center;
+}
+.gridson {
+  border: 1px;
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+  margin: auto;
+}

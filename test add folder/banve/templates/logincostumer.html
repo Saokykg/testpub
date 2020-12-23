@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login costumer</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../static/css/style.css" type="text/css" media="all">
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</head>
+<body>
+    <h1 class="text-center text-info text-danger" style="width: 100%">ĐĂNG NHẬP</h1>
+    {% if kt==False %}
+    <form style="width: 50%; margin: auto" method="post">
+        <div class="form-group">
+            <label for="username" style="font-size: 30px">Username</label>
+            <input type="text"
+                   id="username"
+                   name="username"
+                   class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="password" style="font-size: 30px">Password</label>
+            <input type="password"
+                   id="password"
+                   name="password"
+                   class="form-control" />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Đăng nhập" class="btn btn-danger" />
+        </div>
+    </form>
+    {% else %}
+    <div class="container text-center">
+        <h1 style="width: 100%" class="text-center">Đăng nhập thành công nhấn nút quay lại trang trước</h1>
+        <a class="btn btn-danger text-center" href="{{ session['page'] }}" >Back</a>
+    </div>
+    {% endif %}
+</body>
+</html>
